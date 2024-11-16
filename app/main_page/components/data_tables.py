@@ -8,4 +8,4 @@ class TicketsDataTable(ft.DataTable):
         self.columns = columns
         self.rows = rows
         self.column_spacing = 20
-        self.data_row_max_height = 60
+        self.data_row_max_height = 70

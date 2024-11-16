@@ -1,10 +1,23 @@
 import flet as ft
-from main_page.components.texts import TitleText
+from main_page.components.texts import TitleText, DataTableColumnText
 from main_page.components.data_tables import TicketsDataTable
-
+from .button_logic import back, get_ticket
 
 async def view(page: ft.Page):
 
+    title, dt_container, get_ticket_container = await get_controls()
+
+    page.add(
+        ft.TextButton("Назад", on_click=back),
+        title,
+        dt_container,
+        get_ticket_container
+    )
+
+
+
+
+async def get_controls() -> list[ft.Control]:
     title = ft.Container(
         content=TitleText(value="Электронная очередь\nСтуденческого Центра БГТУ «Военмех»", text_align=ft.TextAlign.CENTER),
         alignment=ft.alignment.center
@@ -13,10 +26,10 @@ async def view(page: ft.Page):
 
     dt = TicketsDataTable(
         columns=[
-            ft.DataColumn(ft.Text("Талон")),
-            ft.DataColumn(ft.Text("Стол")),
-            ft.DataColumn(ft.Text("ФИО")),
-            ft.DataColumn(ft.Text("Группа"))
+            ft.DataColumn(DataTableColumnText("Талон")),
+            ft.DataColumn(DataTableColumnText("Стол")),
+            ft.DataColumn(DataTableColumnText("ФИО")),
+            ft.DataColumn(DataTableColumnText("Группа"))
         ]
     )
 
@@ -29,7 +42,8 @@ async def view(page: ft.Page):
         ),
         adaptive=True,
         alignment=ft.alignment.center,
-        height=250,
+        height=300,
+        margin=ft.margin.only(top=50, bottom=50)
     )
 
     for _ in range(10):
@@ -42,7 +56,10 @@ async def view(page: ft.Page):
             ),
         )
 
-    page.add(
-        title,
-        dt_container
+
+    get_ticket_container = ft.Container(
+        content=ft.FilledButton("Получить талон", on_click=get_ticket),
+        alignment=ft.alignment.center
     )
+
+    return title, dt_container, get_ticket_container
